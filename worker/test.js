@@ -1,11 +1,11 @@
 const ConsoleCollector = require("./console-collector.js");
 const dispatch = require("./dispatch.js");
+const { UserError } = require("./error.js");
 const {
-  UserError,
   getFirstStackLine,
   convertStack,
   filterStackLines,
-} = require("./error.js");
+} = require("./stack.js");
 
 function test(message, testFunction, userCodeLines) {
   try {
