@@ -1,5 +1,8 @@
 const { inspect } = require("./inspect.js");
 
+/**
+ * @param {any} err
+ */
 function dispatch(err) {
   if (!err) {
     return { name: "UnknownError", message: "[error was falsy]" };

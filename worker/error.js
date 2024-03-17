@@ -4,6 +4,10 @@
 class UserError {}
 
 class AssertionError extends UserError {
+  /**
+   * @param {any} actual
+   * @param {any} expected
+   */
   constructor(actual, expected) {
     super();
     this.name = "AssertionError";

@@ -1,13 +1,20 @@
 const { format } = require("./inspect.js");
 
 class ConsoleCollector {
-  wrap(console) {
-    this._mockedLogs = [];
+  /**
+   * @type {Array<{args: any[]}>}
+   */
+  _mockedLogs = [];
 
+  /**
+   * @param {any} console
+   */
+  wrap(console) {
     const mocks = this._getMocks();
     Object.keys(console).forEach((key) => {
       const original = console[key];
-      console[key] = (...values) => {
+      console[key] = (/** @type {any[]} */ ...values) => {
+        // @ts-expect-error: mocks[key] does not recognize that key is subset of keyof mocks
         mocks[key](...values);
         original(format(...values));
       };
@@ -28,6 +35,9 @@ class ConsoleCollector {
     };
   }
 
+  /**
+   * @param {any[]} values
+   */
   _log(...values) {
     this._mockedLogs.push({ args: values });
   }
