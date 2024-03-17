@@ -1,3 +1,6 @@
+/**
+ * Known errors thrown on purpose by the test framework
+ */
 class UserError {}
 
 class AssertionError extends UserError {

@@ -1,3 +1,4 @@
+const ConsoleCollector = require("./console-collector.js");
 const dispatch = require("./dispatch.js");
 const {
   UserError,
@@ -6,18 +7,22 @@ const {
   filterStackLines,
 } = require("./error.js");
 
-function test(message, callback, userCodeLines) {
+function test(message, testFunction, userCodeLines) {
   try {
-    callback();
+    const consoleCollector = new ConsoleCollector();
+    consoleCollector.wrap(console);
+    testFunction();
     return { message, err: null };
   } catch (err) {
+    // 1 - If it is a user error, consider this as a result (an error result)
+
     const convertedStack =
       typeof err?.stack === "string" ? convertStack(err.stack) : undefined;
 
-    const isUserError =
-      err &&
-      (err instanceof UserError ||
-        getFirstStackLine(convertedStack) <= userCodeLines);
+    const errorHappenedInsideUserCode =
+      getFirstStackLine(convertedStack) <= userCodeLines;
+
+    const isUserError = err instanceof UserError || errorHappenedInsideUserCode;
 
     if (isUserError) {
       if (convertedStack) {
@@ -25,6 +30,8 @@ function test(message, callback, userCodeLines) {
       }
       return { message, err: dispatch(err) };
     }
+
+    // 2 - else (internal error) throw it
 
     throw dispatch(err);
   }
