@@ -1,7 +1,5 @@
 const deepEqual = require("./vendor/deep-is@0.1.4.js");
-const { AssertionError } = require("./error.js")
-
-
+const { AssertionError } = require("./error.js");
 
 function expectEquals(actual, expected) {
   if (!deepEqual(actual, expected)) {
@@ -12,12 +10,12 @@ function expectEquals(actual, expected) {
 function expect(actual) {
   return {
     to: {
-      eql: expected => expectEquals(actual, expected),
+      eql: (expected) => expectEquals(actual, expected),
       deep: {
-        equal: expected => expectEquals(actual, expected)
+        equal: (expected) => expectEquals(actual, expected),
       },
-    }
-  }
+    },
+  };
 }
 
-module.exports = expect
+module.exports = expect;

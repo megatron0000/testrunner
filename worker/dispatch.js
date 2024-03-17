@@ -2,7 +2,7 @@ const { inspect } = require("./inspect.js");
 
 function dispatch(err) {
   if (!err) {
-    return { name: "UnknownError", message: "[error was falsy]" }
+    return { name: "UnknownError", message: "[error was falsy]" };
   }
 
   return {
@@ -12,10 +12,10 @@ function dispatch(err) {
     ...("actual" in err && {
       payload: {
         actual: inspect(err.actual),
-        expected: inspect(err.expected)
-      }
-    })
-  }
+        expected: inspect(err.expected),
+      },
+    }),
+  };
 }
 
 module.exports = dispatch;
